@@ -7,6 +7,11 @@ import matlab
  
 FFT_MATLAB_FUNC_DIR = r"d:\OneDrive - NTB\105\06_Simulationen\functions\fft\matlab_func"
 
+def get_N_highest_peaks(frequency, coefficients, N):
+    pk_index = np.argsort(abs(coefficients))[::-1][:N]
+    freq_pk, c_pk =  (frequency[pk_index], coefficients[pk_index])
+    return  freq_pk, c_pk 
+
 def calc_time_series(frequency, coefficients, matlab_engine = None):
     """ Get the FFT of a given signal and corresponding frequency bins.
 

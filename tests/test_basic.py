@@ -11,7 +11,7 @@ from sklearn.metrics import mean_squared_error
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT_DIR)
 
-from fft import calc_fourier_coefficients, calc_time_series
+from fft import calc_fourier_coefficients, calc_time_series, get_N_highest_peaks
 
 def rmse(predictions, targets):
     return np.sqrt(((predictions - targets) ** 2).mean())
@@ -53,8 +53,24 @@ def test_calc_fourier_coefficients_numpy_vs_matlab():
 def test_calc_time_series_numpy_vs_matlab():
     raise(NotImplementedError)
 
+def test_get_N_highest_peaks():
+    t = np.linspace(start=0, stop=1, num=1001, endpoint=True)
+    s = signal.square(10 * np.pi * 5 * t)
+    [f, c] = calc_fourier_coefficients(t, s)
+    freq_pk, c_pk = get_N_highest_peaks(frequency = f, coefficients = c, N = 10)
+
+    for fp, hp in zip(freq_pk, c_pk):
+        print(f'Freq: {fp:.2e} Hz Abs:{abs(hp):.2e}')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.semilogx(freq_pk, (abs(c_pk)), label='numpy')
+    plt.show()
+
+
 if __name__ == "__main__":
-    test_numpy_fft_and_reverse()
+    # test_numpy_fft_and_reverse()
     test_calc_fourier_coefficients_numpy_vs_matlab()
-    test_calc_time_series_numpy_vs_matlab()
+    # test_calc_time_series_numpy_vs_matlab()
+    test_get_N_highest_peaks()
 
