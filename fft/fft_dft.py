@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def calc_pulse_wave_DFT(ampl_pkpk, duty, fsw, n_harmonics=10):
     """
      https://hydrogenaud.io/index.php?topic=107461.0

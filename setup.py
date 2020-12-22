@@ -8,6 +8,16 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
+version = '0.5'
+
+setup(
+    name='rockstar',
+    version=version,
+
+
 setup(
     name='fft',
     version='0.0.0',
@@ -17,7 +27,6 @@ setup(
     author_email='tinix84@gmail.com',
     url='https://github.com/tinix84/fft',
     license=license,
-    #packages=['fft'],
     packages=find_packages(exclude=('tests', 'docs', 'mfiles')),
-    install_requires=['numpy', 'scipy'],  
+    install_requires=requirements, 
 )

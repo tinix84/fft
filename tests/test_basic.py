@@ -6,9 +6,12 @@ import os
 
 from fft import *
 
-#TODO: move to a better package
-def rmse(predictions, targets):
-    return np.sqrt(((predictions - targets) ** 2).mean())
+try:
+    import matlab.engine
+    import matlab
+    matlab_engine_is_available = True
+except ImportError:
+    matlab_engine_is_available = False
 
 def test_numpy_fft_and_reverse():
     # fft test
@@ -50,7 +53,6 @@ def test_compare_fft_and_fourier_formula():
     ax.plot(tinv, sinv)
     plt.show()
 
-
 def test_calc_fourier_coefficients_numpy_vs_matlab():
     # fft test
     t = np.linspace(start=0, stop=1, num=1001, endpoint=True)
@@ -64,19 +66,19 @@ def test_calc_fourier_coefficients_numpy_vs_matlab():
     ax.semilogx(f, (abs(c)), label='numpy')
     plt.show()
 
-    # assert rmse(f, f_matlab) < 1e-6, "freq vector matches"
-    # assert rmse(abs(c_matlab), abs(c)) < 1e-6, "c vector matches"
+    assert rmse(f, f_matlab) < 1e-6, "freq vector matches"
+    assert rmse(abs(c_matlab), abs(c)) < 1e-6, "c vector matches"
     print("freq_vector_diff {}".format(rmse(f,f_matlab)))
     print("amp_vector_diff {}".format(rmse(abs(c_matlab), abs(c))))
 
 def test_calc_time_series_numpy_vs_matlab():
     raise(NotImplementedError)
 
-def test_get_N_highest_peaks():
+def test_get_N_highest_peaks(n_peaks=10):
     t = np.linspace(start=0, stop=1, num=1001, endpoint=True)
     s = signal.square(10 * np.pi * 5 * t)
     [f, c] = calc_fourier_coefficients(t, s)
-    freq_pk, c_pk = get_N_highest_peaks(frequency = f, coefficients = c, N = 10)
+    freq_pk, c_pk = get_N_highest_peaks(frequency = f, coefficients = c, number_of_peaks = n_peaks)
 
     for fp, hp in zip(freq_pk, c_pk):
         print(f'Freq: {fp:.2e} Hz Abs:{abs(hp):.2e}')
@@ -90,7 +92,8 @@ def test_get_N_highest_peaks():
 if __name__ == "__main__":
     test_numpy_fft_and_reverse()
     test_compare_fft_and_fourier_formula()
-    test_calc_fourier_coefficients_numpy_vs_matlab()
-    test_calc_time_series_numpy_vs_matlab()
+    if matlab_engine_is_available:
+        test_calc_fourier_coefficients_numpy_vs_matlab()
+        test_calc_time_series_numpy_vs_matlab()
     test_get_N_highest_peaks()
 

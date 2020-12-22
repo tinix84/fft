@@ -1,1 +1,4 @@
-/fft/__pycache__/*.pyc
+/fft/__pycache__/*.*
+.venv
+/fft.egg-info
+/tests/__pycache__/*.*
