@@ -12,11 +12,6 @@ with open('requirements.txt') as f:
 version = '0.1'
 
 setup(
-    name='rockstar',
-    version=version,
-
-
-setup(
     name='fft',
     version='0.0.0',
     description='collection of fft, spectrum utilities for power electronic',
@@ -26,5 +21,5 @@ setup(
     url='https://github.com/tinix84/fft',
     license=license,
     packages=find_packages(exclude=('tests', 'docs', 'mfiles')),
-    install_requires=requirements
+    install_requires=requirements,
 )

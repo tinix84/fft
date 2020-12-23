@@ -3,7 +3,6 @@ attrs==20.3.0
 backcall==0.2.0
 cycler==0.10.0
 decorator==4.4.2
--e git+https://github.com/tinix84/fft.git@616fbdf73242236481c6cfa588680dfde79fb3e7#egg=fft
 flake8==3.8.4
 iniconfig==1.1.1
 ipykernel==5.4.2

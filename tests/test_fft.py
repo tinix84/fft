@@ -2,7 +2,9 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .context import fft
+
+from fft import calc_fourier_coefficients, calc_time_series
+from fft import calc_square_wave_DFT, get_N_highest_peaks
 
 try:
     import matlab.engine
@@ -10,6 +12,11 @@ try:
     matlab_engine_is_available = True
 except ImportError:
     matlab_engine_is_available = False
+
+
+#TODO: move to a better package
+def rmse(predictions, targets):
+    return np.sqrt(((predictions - targets) ** 2).mean())
 
 
 def test_numpy_fft_and_reverse():
@@ -23,7 +30,7 @@ def test_numpy_fft_and_reverse():
 
     [f, c] = calc_fourier_coefficients(t, s)
     ax = fig.add_subplot(312)
-    ax.semilogx(f, 20*np.log10(np.abs(c)))
+    ax.semilogx(f, 20 * np.log10(np.abs(c)))
 
     [tinv, sinv] = calc_time_series(f, c)
     ax = fig.add_subplot(313)
@@ -35,15 +42,15 @@ def test_compare_fft_and_fourier_formula():
     # fft test
     fsw = 300
     Apk = 40
-    t = np.linspace(start=0, stop=1, num=100*fsw, endpoint=True)
-    s = Apk*signal.square(2 * np.pi * fsw * t)
+    t = np.linspace(start=0, stop=1, num=(100 * fsw), endpoint=True)
+    s = Apk * signal.square(2 * np.pi * fsw * t)
 
     fig = plt.figure()
     ax = fig.add_subplot(311)
     ax.plot(t, s)
 
     [f, c] = calc_fourier_coefficients(t, s)
-    [fs, cs] = calc_square_wave_DFT(ampl_pkpk=2*Apk,fsw=fsw, n_harmonics=30)
+    [fs, cs] = calc_square_wave_DFT(ampl_pkpk=(2 * Apk),fsw=fsw, n_harmonics=30)
     ax = fig.add_subplot(312)
     ax.loglog(f, np.abs(c), fs, np.abs(cs))
 
@@ -68,7 +75,7 @@ def test_calc_fourier_coefficients_numpy_vs_matlab():
 
     assert rmse(f, f_matlab) < 1e-6, "freq vector matches"
     assert rmse(abs(c_matlab), abs(c)) < 1e-6, "c vector matches"
-    print("freq_vector_diff {}".format(rmse(f,f_matlab)))
+    print("freq_vector_diff {}".format(rmse(f, f_matlab)))
     print("amp_vector_diff {}".format(rmse(abs(c_matlab), abs(c))))
 
 
@@ -80,7 +87,7 @@ def test_get_N_highest_peaks(n_peaks=10):
     t = np.linspace(start=0, stop=1, num=1001, endpoint=True)
     s = signal.square(10 * np.pi * 5 * t)
     [f, c] = calc_fourier_coefficients(t, s)
-    freq_pk, c_pk = get_N_highest_peaks(frequency = f, coefficients = c, number_of_peaks = n_peaks)
+    freq_pk, c_pk = get_N_highest_peaks(frequency=f, coefficients=c, number_of_peaks=n_peaks)
 
     for fp, hp in zip(freq_pk, c_pk):
         print(f'Freq: {fp:.2e} Hz Abs:{abs(hp):.2e}')
