@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 class BodePlotMatplotlib():
     def __init__(self):
         self.fig, self.ax = plt.subplots()

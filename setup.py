@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from setuptools import setup, find_packages
 
 with open('README.md') as f:
@@ -11,7 +9,7 @@ with open('LICENSE') as f:
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
-version = '0.5'
+version = '0.1'
 
 setup(
     name='rockstar',
@@ -28,5 +26,5 @@ setup(
     url='https://github.com/tinix84/fft',
     license=license,
     packages=find_packages(exclude=('tests', 'docs', 'mfiles')),
-    install_requires=requirements, 
+    install_requires=requirements
 )

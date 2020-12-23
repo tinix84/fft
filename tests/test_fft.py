@@ -1,10 +1,8 @@
 from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
-import os
 
-from fft import *
+from .context import fft
 
 try:
     import matlab.engine
@@ -12,6 +10,7 @@ try:
     matlab_engine_is_available = True
 except ImportError:
     matlab_engine_is_available = False
+
 
 def test_numpy_fft_and_reverse():
     # fft test
@@ -34,7 +33,7 @@ def test_numpy_fft_and_reverse():
 
 def test_compare_fft_and_fourier_formula():
     # fft test
-    fsw=300
+    fsw = 300
     Apk = 40
     t = np.linspace(start=0, stop=1, num=100*fsw, endpoint=True)
     s = Apk*signal.square(2 * np.pi * fsw * t)
@@ -52,6 +51,7 @@ def test_compare_fft_and_fourier_formula():
     ax = fig.add_subplot(313)
     ax.plot(tinv, sinv)
     plt.show()
+
 
 def test_calc_fourier_coefficients_numpy_vs_matlab():
     # fft test
@@ -71,8 +71,10 @@ def test_calc_fourier_coefficients_numpy_vs_matlab():
     print("freq_vector_diff {}".format(rmse(f,f_matlab)))
     print("amp_vector_diff {}".format(rmse(abs(c_matlab), abs(c))))
 
+
 def test_calc_time_series_numpy_vs_matlab():
     raise(NotImplementedError)
+
 
 def test_get_N_highest_peaks(n_peaks=10):
     t = np.linspace(start=0, stop=1, num=1001, endpoint=True)

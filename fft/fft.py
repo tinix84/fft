@@ -38,7 +38,8 @@ def get_matlab_calc_fourier_coefficients(time, signal):
     mat_time = matlab.double(time.tolist())
     mat_signal = matlab.double(signal.tolist())
     # https://ch.mathworks.com/help/matlab/apiref/matlab.engine.matlabengine-class.html
-    [f_matlab, c_matlab] = eng.calc_fourier_coefficients(mat_time, mat_signal, nargout=2)
+    [f_matlab, c_matlab] = eng.calc_fourier_coefficients(mat_time, mat_signal,
+                            nargout=2)
     f = np.asarray(f_matlab)[0]
     c = np.asarray(c_matlab)[0]
     return [f, c]
@@ -59,7 +60,8 @@ def get_octave_calc_fourier_coefficients(time, signal):
     mat_time = matlab.double(time.tolist())
     mat_signal = matlab.double(signal.tolist())
     # https://ch.mathworks.com/help/matlab/apiref/matlab.engine.matlabengine-class.html
-    [f_matlab, c_matlab] = eng.calc_fourier_coefficients(mat_time, mat_signal, nargout=2)
+    [f_matlab, c_matlab] = eng.calc_fourier_coefficients(mat_time, mat_signal,
+                            nargout=2)
     f = np.asarray(f_matlab)[0]
     c = np.asarray(c_matlab)[0]
     return [f, c]
@@ -92,7 +94,7 @@ def calc_time_series(frequency, coefficients, matlab_engine=None):
         return [t, s]
 
 
-def calc_fourier_coefficients(time: np.array, signal: np.array, matlab_engine=None):
+def calc_fourier_coefficients(time, signal, matlab_engine=None):
     """ Get the FFT of a given signal and corresponding frequency bins.
 
     Parameters:
